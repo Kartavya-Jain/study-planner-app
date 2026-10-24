@@ -1,297 +1,100 @@
 <!doctype html>
 <html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Study Planner</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sign in · StudyPlanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f5f6fb;--fg:#1b2033;--card:#fff;--line:#e8eaf2;--ac:#5b5bd6;--ac2:#8b5cf6;--soft:#eeeefc;--mut:#7a8099;--sh:0 1px 2px rgba(20,24,50,.04),0 8px 24px rgba(20,24,50,.06)}
-[data-theme=dark]{--bg:#0f1117;--fg:#e9ebf5;--card:#171a24;--line:#262a38;--soft:#23244a;--mut:#8b91a8;--sh:0 8px 24px rgba(0,0,0,.35)}
-*{box-sizing:border-box}
-body{margin:0;display:flex;min-height:100vh;background:var(--bg);color:var(--fg);font:14.5px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-aside{width:244px;padding:22px 16px;background:var(--card);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:18px}
-.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:17px;letter-spacing:-.2px}
-.logo span{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;display:grid;place-items:center}
-nav{display:flex;flex-direction:column;gap:2px}
-nav button{width:100%;text-align:left;border:0;background:none;padding:10px 12px;border-radius:10px;color:var(--mut);font-weight:500}
-nav button:hover,nav .on{background:var(--soft);color:var(--ac)}nav .on{font-weight:600}
-aside>small{margin-top:auto;line-height:1.7}
-#wrap{flex:1;padding:0 28px 40px;min-width:0}
-header{display:flex;gap:10px;align-items:center;padding:16px 0;position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px)}
-#ptitle{margin:0 12px 0 0;font-size:21px;letter-spacing:-.3px;white-space:nowrap}
-#q{flex:1;max-width:360px;margin-left:auto}#net{font-size:12px;color:var(--mut);white-space:nowrap}
-#me{display:flex;align-items:center;gap:8px;margin-left:6px}
-#me i{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;display:grid;place-items:center;font-style:normal;font-weight:600}
-#me span{display:flex;flex-direction:column;line-height:1.2;font-weight:600}#me small{text-transform:capitalize;font-weight:400}
-input,select,textarea,button{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg);transition:.15s}
-input:focus,select:focus,textarea:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 18%,transparent)}
-button{cursor:pointer;font-weight:500}button:hover{border-color:var(--ac);color:var(--ac)}
-form button{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:0;font-weight:600;padding:9px 18px}
-form button:hover{color:#fff;filter:brightness(1.08);transform:translateY(-1px)}
-main>*{animation:up .35s ease both}@keyframes up{from{opacity:0;transform:translateY(8px)}}
-h2,h3{letter-spacing:-.2px}h3{font-size:15px;margin:22px 0 8px}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0;padding:14px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh)}
-.row input:first-child{flex:1;min-width:150px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:12px 0}
-.card,.item,.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--sh)}
-.cards .card{position:relative;overflow:hidden}.cards .card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--ac),var(--ac2))}
-.card small{font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:600}.card h2{margin:6px 0 0;font-size:28px}
-small,.muted{color:var(--mut)}
-.board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.col{background:color-mix(in srgb,var(--card) 60%,var(--bg));border:1px dashed var(--line);border-radius:14px;padding:12px;min-height:240px}
-.col h3{margin:2px 0 10px;display:flex;gap:8px;align-items:center}.col h3::before{content:"";width:9px;height:9px;border-radius:50%}
-.col[data-s=todo] h3::before{background:#94a3b8}.col[data-s=doing] h3::before{background:#f59e0b}.col[data-s=done] h3::before{background:#10b981}
-.col:not(:has(.item))::after{content:"Drop tasks here";display:block;text-align:center;color:var(--mut);padding:28px 0;font-size:13px}
-#main:not(:has(.item,.cards,.card,.clock,.cal,.board,.muted))::after{content:"Nothing here yet — add your first entry above.";display:block;text-align:center;color:var(--mut);padding:40px 0}
-.item{margin:8px 0;display:flex;gap:10px;align-items:center;justify-content:space-between;border-left:4px solid var(--line);transition:.15s}
-.item[draggable]{cursor:grab}.item:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(91,91,214,.15)}
-.ph{border-left-color:#ef4444}.pm{border-left-color:#f59e0b}.pl{border-left-color:#10b981}
-.item.done{opacity:.55}.item.done b,.col[data-s=done] .item span{text-decoration:line-through}
-.item button{padding:3px 10px;font-size:13px}.item button[data-del],.item button[data-delp]{color:var(--mut)}
-.item button[data-del]:hover,.item button[data-delp]:hover{color:#ef4444;border-color:#ef4444}
-.bar{height:8px;background:var(--line);border-radius:6px;overflow:hidden;width:150px;flex-shrink:0}
-.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:6px;transition:width .4s}
-.chart{display:flex;gap:12px;align-items:flex-end;height:200px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh)}
-.chart div{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:12px;color:var(--mut)}
-.chart i{width:60%;max-width:46px;background:linear-gradient(180deg,var(--ac2),var(--ac));border-radius:8px 8px 0 0;min-height:3px}
-.chart b{color:var(--fg);font-weight:600}
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.cal em{text-align:center;color:var(--mut);font-style:normal;font-weight:600;font-size:12px}
-.day{min-height:84px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px;overflow:hidden}
-.day small{display:block;font-size:11px;background:var(--soft);color:var(--ac);border-radius:5px;padding:1px 5px;margin-top:3px}
-.today{border-color:var(--ac);box-shadow:0 0 0 2px color-mix(in srgb,var(--ac) 20%,transparent)}
-.clock{font-size:84px;font-weight:700;text-align:center;margin:32px auto;font-variant-numeric:tabular-nums;letter-spacing:-2px;background:linear-gradient(135deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.due{color:#d97706;font-weight:600}.over{color:#ef4444;font-weight:600}
-.overlay{position:fixed;inset:0;z-index:20;display:grid;grid-template-columns:1.1fr 1fr;background:var(--bg)}
-.hero{background:linear-gradient(135deg,#4338ca,#7c3aed 60%,#a855f7);color:#fff;display:flex;flex-direction:column;justify-content:center;padding:64px}
-.hero h1{font-size:46px;line-height:1.08;letter-spacing:-1.2px;margin:0 0 16px}.hero p{opacity:.88;font-size:17px;max-width:430px}
-.hero ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:10px}
-.overlay .box{align-self:center;justify-self:center;width:min(380px,90%);display:flex;flex-direction:column;gap:12px;padding:30px}
-.overlay .box h2{margin:0;font-size:24px}.overlay a{color:var(--ac);text-align:center;text-decoration:none;font-weight:500}
-@media(max-width:860px){.overlay{grid-template-columns:1fr}.hero{display:none}}
-@media(max-width:800px){body{flex-direction:column}aside{width:100%;height:auto;position:static;padding:14px}aside>small{display:none}nav{flex-direction:row;flex-wrap:wrap}nav button{width:auto}#wrap{padding:0 14px 30px}.board{grid-template-columns:1fr}#me span,#net{display:none}header{flex-wrap:wrap}#q{max-width:none;order:9;flex-basis:100%;margin:0}}
+:root{--bg:#f3f6fb;--card:#fff;--fg:#12172b;--mut:#646b84;--line:#e4e7f1;--ac:#115fd9;--ac2:#2b7bf0;--soft:#e8f1fe;--err:#e11d48}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1220;--card:#111a2b;--fg:#e8eefb;--mut:#93a1bd;--line:#1f2a40;--soft:#12264a;--err:#fb7185}}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;display:grid;grid-template-columns:1.15fr 1fr}
+.brand{position:relative;overflow:hidden;color:#fff;padding:48px 56px;display:flex;flex-direction:column;justify-content:space-between;
+background:radial-gradient(700px 420px at 95% 0%,rgba(43,123,240,.5),transparent 60%),linear-gradient(160deg,#061733,#0a2a5e 60%,#0d3b85)}
+.brand::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(circle at 30% 40%,#000,transparent 75%)}
+.brand>*{position:relative}
+.logo{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.3px}
+.logo i{width:38px;height:38px;border-radius:11px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);display:grid;place-items:center;font-style:normal;backdrop-filter:blur(8px)}
+h1{font-size:clamp(34px,4vw,54px);line-height:1.06;letter-spacing:-1.6px;margin:0 0 16px;font-weight:800}
+.brand p{font-size:17px;opacity:.85;max-width:440px;margin:0}
+.stack{position:relative;height:250px;margin-top:34px;max-width:440px}
+.g{position:absolute;background:#fff;color:#0b1f3f;border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:14px 16px;box-shadow:0 20px 40px rgba(10,10,40,.25);animation:fl 6s ease-in-out infinite}
+.g small{display:block;opacity:.75;font-size:12px;font-weight:500}.g b{font-size:21px;letter-spacing:-.5px}
+.g1{left:0;top:0;width:230px}.g2{right:0;top:58px;width:200px;animation-delay:-2s}.g3{left:36px;bottom:0;width:250px;animation-delay:-4s}
+.pb{height:7px;border-radius:5px;background:#e3ebf7;margin-top:9px;overflow:hidden}.pb s{display:block;height:100%;width:72%;background:linear-gradient(90deg,var(--ac),var(--ac2));border-radius:5px}
+@keyframes fl{50%{transform:translateY(-10px)}}
+.note{font-size:13px;opacity:.7}
+.side{display:grid;place-items:center;padding:32px}
+.box{width:100%;max-width:420px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--soft);border-radius:13px;padding:4px;margin-bottom:28px}
+.tabs button{border:0;background:none;padding:10px;border-radius:10px;font:inherit;font-weight:600;color:var(--mut);cursor:pointer;transition:.2s}
+.tabs .on{background:var(--card);color:var(--fg);box-shadow:0 2px 8px rgba(20,24,60,.12)}
+h2{font-size:28px;letter-spacing:-.8px;margin:0 0 6px}.sub{color:var(--mut);margin:0 0 24px}
+.cont{display:none;align-items:center;justify-content:space-between;gap:10px;background:var(--soft);border-radius:12px;padding:12px 14px;margin-bottom:18px;font-weight:500}.cont a{color:var(--ac);font-weight:600;text-decoration:none}
+label{display:block;font-size:13px;font-weight:600;margin:0 0 6px}
+.f{position:relative;margin-bottom:16px}.f>span{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.55;font-size:15px;pointer-events:none}
+.f input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--fg);font:inherit;transition:.15s}
+.f input:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 18%,transparent)}
+.eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:none;cursor:pointer;color:var(--mut);padding:6px;font-size:13px;font-weight:600}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.roles input{position:absolute;opacity:0}.roles label{margin:0;border:1.5px solid var(--line);border-radius:13px;padding:12px;cursor:pointer;text-align:center;transition:.15s;background:var(--card)}
+.roles label b{display:block;font-size:20px}.roles label small{color:var(--mut);font-weight:500}
+.roles input:checked+label{border-color:var(--ac);background:var(--soft)}
+.reg,.fac{display:none}
+.go{width:100%;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:700;color:#fff;cursor:pointer;background:var(--ac);box-shadow:0 4px 14px rgba(17,95,217,.3);transition:.15s;display:flex;align-items:center;justify-content:center;gap:10px}
+.go:hover{transform:translateY(-1px);filter:brightness(1.07)}.go:disabled{opacity:.7;cursor:wait;transform:none}
+.sp{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:r .7s linear infinite;display:none}.go:disabled .sp{display:block}@keyframes r{to{transform:rotate(360deg)}}
+.err{color:var(--err);font-size:13.5px;font-weight:500;min-height:20px;margin:0 0 12px}
+.foot{text-align:center;color:var(--mut);font-size:13px;margin-top:22px}
+@media(max-width:900px){body{grid-template-columns:1fr}.brand{padding:26px 24px}.brand h1,.brand p,.stack,.note{display:none}}
 </style></head><body>
-<aside><div class="logo"><span>S</span>StudyPlanner</div><nav id="nav"></nav><small class="muted">Shortcuts<br>1-9 views · / search<br>n new task · d theme</small></aside>
-<div id="wrap"><header><h2 id="ptitle"></h2><input id="q" placeholder="Search tasks…  ( / )"><span id="net"></span><button id="bell" title="Enable notifications">🔔</button><button id="theme" title="Dark mode (d)">🌓</button><button id="out">Logout</button><div id="me"></div></header>
-<main id="main"></main></div>
-<div id="auth"></div>
+<section class="brand">
+  <div class="logo"><i>S</i>StudyPlanner</div>
+  <div><h1>Academic planning for<br>modern institutions.</h1><p>Students plan and track their work. Faculty assign tasks and monitor progress. One secure, role-based platform.</p>
+    <div class="stack" aria-hidden="true">
+      <div class="g g1"><small>Today's focus</small><b>4h 20m</b><div class="pb"><s></s></div></div>
+      <div class="g g2"><small>Next deadline</small><b>ML Lab · 2d</b></div>
+      <div class="g g3"><small>Attendance</small><b>86% <span style="font-size:13px;opacity:.8">on track</span></b><div class="pb"><s style="width:86%"></s></div></div>
+    </div></div>
+  <div class="note">Secure sign-in · Role-based access · Data private to each account</div>
+</section>
+<main class="side"><div class="box">
+  <div class="tabs" role="tablist"><button id="tl" class="on" type="button">Sign in</button><button id="tr" type="button">Create account</button></div>
+  <div class="cont" id="cont"><span>You're already signed in.</span><a href="/app.html">Open dashboard →</a></div>
+  <h2 id="ttl">Welcome back</h2><p class="sub" id="sub">Sign in to continue to your dashboard.</p>
+  <form id="f" novalidate>
+    <div class="reg"><label for="name">Full name</label><div class="f"><span>👤</span><input id="name" autocomplete="name" placeholder="Harshita Solanki"></div>
+      <label>I am a</label><div class="roles"><input type="radio" name="role" id="rs" value="student" checked><label for="rs"><b>🎓</b>Student<br><small>Plan &amp; track</small></label><input type="radio" name="role" id="rf" value="faculty"><label for="rf"><b>🏫</b>Faculty<br><small>Assign &amp; monitor</small></label></div></div>
+    <label for="email">Email</label><div class="f"><span>✉️</span><input id="email" type="email" autocomplete="email" placeholder="you@college.edu"></div>
+    <label for="pw">Password</label><div class="f"><span>🔒</span><input id="pw" type="password" autocomplete="current-password" placeholder="At least 4 characters"><button type="button" class="eye" id="eye">Show</button></div>
+    <div class="fac"><label for="code">Faculty code</label><div class="f"><span>🔑</span><input id="code" placeholder="Provided by your institution"></div></div>
+    <p class="err" id="err" role="alert"></p>
+    <button class="go" id="go"><i class="sp"></i><span id="gt">Sign in</span></button>
+  </form>
+  <p class="foot">Your data is private to your account.</p>
+</div></main>
 <script>
-/* Study Planner — all app behaviour lives here. Python only persists data. */
-const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-const T=['tasks','assignments','attendance','goals','notes','courses'];
-let ME=JSON.parse(localStorage.getItem('sp_me')||'null'),TOK=localStorage.getItem('sp_tok'),POSTED=[],STU=[];
-const K=t=>'sp_'+(ME?ME.id:'x')+'_'+t;
-const S={};const loadLocal=()=>T.forEach(t=>S[t]=JSON.parse(localStorage.getItem(K(t))||'[]'));loadLocal();
-const api=(u,o={})=>fetch('/api/'+u,{...o,headers:{'Content-Type':'application/json',Authorization:'Bearer '+TOK}});
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const today=()=>new Date().toLocaleDateString('en-CA');
-const setNet=o=>$('#net').textContent=o?'● synced':'○ offline — saved locally';
-
-/* ---------- storage: localStorage cache + background sync to Python ---------- */
-async function push(t){
-  localStorage.setItem(K(t),JSON.stringify(S[t]));
-  try{const r=await api(t,{method:'PUT',body:JSON.stringify(S[t])});if(!r.ok)throw 0;localStorage.removeItem(K('dirty_'+t));setNet(1)}
-  catch{localStorage.setItem(K('dirty_'+t),1);setNet(0)}
-}
-async function pull(){
-  for(const t of T){
-    if(localStorage.getItem(K('dirty_'+t))){await push(t);continue}
-    try{const r=await api(t);if(!r.ok)throw 0;const d=await r.json();
-      if(!d.length&&S[t].length){await push(t);continue}
-      S[t]=d;localStorage.setItem(K(t),JSON.stringify(d));setNet(1)}
-    catch{setNet(0)}
-  }
-}
-const save=t=>{push(t);render()};
-
-/* ---------- helpers ---------- */
-let view='dashboard',cal=new Date(),q='',pf='',sort='due';
-const card=(a,b)=>`<div class=card><small>${a}</small><h2>${b}</h2></div>`;
-const byDue=(a,b)=>(a.due||'9')>(b.due||'9')?1:-1;
-const left=d=>{if(!d)return'no date';const ms=new Date(d)-Date.now();if(ms<0)return'<span class=over>overdue</span>';
-  const h=Math.floor(ms/36e5);return h<48?`<span class=due>${h}h left</span>`:Math.floor(h/24)+'d left'};
-const pct=a=>a.total?a.att/a.total*100:0;
-const avgAtt=()=>S.attendance.length?Math.round(S.attendance.reduce((s,a)=>s+pct(a),0)/S.attendance.length)+'%':'–';
-const bar=p=>`<div class=bar><i style="width:${Math.min(100,p)}%"></i></div>`;
-const pomo=()=>JSON.parse(localStorage.getItem('sp_pomo')||'{}');
-const form=(t,fields,btn='Add')=>`<form data-add=${t} class=row>${fields}<button>${btn}</button></form>`;
-
-/* ---------- views ---------- */
-const V={};
-V.dashboard=()=>{
-  const tk=[...S.tasks,...POSTED],done=tk.filter(x=>x.status=='done').length,pend=S.assignments.filter(a=>!a.done);
-  const goals=S.goals.length?Math.round(S.goals.reduce((s,g)=>s+Math.min(100,g.cur/g.target*100),0)/S.goals.length):0;
-  const p=pomo(),days=[...Array(7)].map((_,i)=>{const d=new Date(Date.now()-(6-i)*864e5).toLocaleDateString('en-CA');return[d.slice(5),(p[d]||0)*25]});
-  const max=Math.max(25,...days.map(d=>d[1])),nm=ME.name;
-  return `<h2>Hi, ${esc(nm||'student')} 👋</h2>
-  <div class=cards>${card('Tasks done',done+' / '+tk.length)}${card('Assignments pending',pend.length)}${card('Avg goal progress',goals+'%')}${card('Avg attendance',avgAtt())}</div>
-  <h3>Focus minutes — last 7 days</h3><div class=chart>${days.map(([d,m])=>`<div><b>${m}</b><i style="height:${m/max*80}%"></i><span>${d}</span></div>`).join('')}</div>
-  <h3>Next deadlines</h3>${pend.sort(byDue).slice(0,5).map(a=>`<p>${esc(a.title)} — ${left(a.due)}</p>`).join('')||'<p class=muted>Nothing pending 🎉</p>'}`;
-};
-V.tasks=()=>{
-  const all=[...POSTED.map(p=>({...p,id:'F'+p.id,pri:'h',fac:1})),...S.tasks];
-  const l=all.filter(t=>(!q||t.title.toLowerCase().includes(q))&&(!pf||t.pri==pf))
-    .sort(sort=='pri'?(a,b)=>'hml'.indexOf(a.pri)-'hml'.indexOf(b.pri):byDue);
-  const opt=(v,n,c)=>`<option value="${v}" ${c==v?'selected':''}>${n}</option>`;
-  return form('tasks',`<input name=title id=newtask placeholder="New personal task…" required><select name=pri><option value=h>High</option><option value=m selected>Medium</option><option value=l>Low</option></select><input type=date name=due>`)+
-  `<div class=row><select id=pf>${opt('','All priorities',pf)}${opt('h','High',pf)}${opt('m','Medium',pf)}${opt('l','Low',pf)}</select>
-  <select id=sort>${opt('due','Sort: due date',sort)}${opt('pri','Sort: priority',sort)}</select><small>🏫 = assigned by faculty · drag cards between columns</small></div>
-  <div class=board>${[['todo','To do'],['doing','In progress'],['done','Done']].map(([s,n])=>`<div class=col data-s=${s}><h3>${n}</h3>${l.filter(t=>t.status==s).map(t=>
-  `<div class="item p${t.pri} ${s}" draggable=true data-id=${t.id}><span>${t.fac?'🏫 ':''}${esc(t.title)}<br><small>${t.fac?`${esc(t.faculty_name)} · ${esc(t.subject)} · due ${t.due} · ${left(t.due)}${t.desc?'<br>'+esc(t.desc):''}`:(t.due||'')}</small></span>${t.fac?'':`<button data-del=tasks data-id=${t.id}>×</button>`}</div>`).join('')}</div>`).join('')}</div>`;
-};
-V.assignments=()=>form('assignments',`<input name=title placeholder="Assignment" required><input name=subject placeholder="Subject"><input type=datetime-local name=due required>`)+
-  [...S.assignments].sort(byDue).map(a=>`<div class="item ${a.done?'done':''}"><span><b>${esc(a.title)}</b> <small>${esc(a.subject)}</small><br>${a.done?'completed':left(a.due)} <small>${(a.due||'').replace('T',' ')}</small></span>
-  <span><button data-tog=${a.id}>${a.done?'Undo':'Done'}</button> <button data-del=assignments data-id=${a.id}>×</button></span></div>`).join('');
-V.calendar=()=>{
-  const y=cal.getFullYear(),m=cal.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate(),ev={};
-  [...S.assignments.filter(a=>a.due).map(a=>[a.due.slice(0,10),'📄 '+a.title]),...[...S.tasks,...POSTED].filter(t=>t.due).map(t=>[t.due,'✅ '+t.title])].forEach(([d,t])=>(ev[d]=ev[d]||[]).push(t));
-  let c='';for(let i=0;i<first;i++)c+='<div></div>';
-  for(let d=1;d<=n;d++){const k=`${y}-${String(m+1).padStart(2,0)}-${String(d).padStart(2,0)}`;
-    c+=`<div class="day ${k==today()?'today':''}"><b>${d}</b>${(ev[k]||[]).map(t=>`<small>${esc(t)}</small>`).join('')}</div>`}
-  return `<div class=row><button data-cal=-1>‹</button><h3>${cal.toLocaleString('default',{month:'long'})} ${y}</h3><button data-cal=1>›</button></div>
-  <div class=cal>${[...'SMTWTFS'].map(x=>`<em>${x}</em>`).join('')}${c}</div>`;
-};
-V.attendance=()=>form('attendance',`<input name=subject placeholder="Subject" required><input type=number name=att min=0 placeholder="Attended" required><input type=number name=total min=1 placeholder="Total classes" required>`)+
-  S.attendance.map(a=>{const p=pct(a),adv=p<75?`Attend the next <b>${Math.ceil((0.75*a.total-a.att)/0.25)}</b> classes to reach 75%`:`You can miss <b>${Math.floor(a.att/0.75-a.total)}</b> more classes and stay ≥75%`;
-  return `<div class=item><span><b>${esc(a.subject)}</b> ${a.att}/${a.total} (${p.toFixed(1)}%)<br><small>${adv}</small></span>${bar(p)}
-  <span><button data-att=p data-id=${a.id}>+Present</button> <button data-att=a data-id=${a.id}>+Absent</button> <button data-del=attendance data-id=${a.id}>×</button></span></div>`}).join('');
-V.cgpa=()=>{
-  const cr=S.courses.reduce((s,c)=>s+c.credits,0),pts=S.courses.reduce((s,c)=>s+c.credits*c.gp,0);
-  return form('courses',`<input name=name placeholder="Course" required><input type=number name=credits min=1 placeholder="Credits" required><select name=gp>${[10,9,8,7,6,5,4,0].map(g=>`<option value=${g}>Grade point ${g}</option>`).join('')}</select>`)+
-  `<div class=card><small>CGPA (10-point scale)</small><h2>${cr?(pts/cr).toFixed(2):'–'}</h2></div>`+
-  S.courses.map(c=>`<div class=item><span>${esc(c.name)} — ${c.credits} credits, GP ${c.gp}</span><button data-del=courses data-id=${c.id}>×</button></div>`).join('');
-};
-V.goals=()=>form('goals',`<input name=title placeholder="Goal (e.g. Solve 100 DSA problems)" required><input type=number name=target min=1 placeholder="Target" required>`)+
-  S.goals.map(g=>`<div class=item><span><b>${esc(g.title)}</b> ${g.cur}/${g.target}</span>${bar(g.cur/g.target*100)}
-  <span><button data-inc=1 data-id=${g.id}>+1</button> <button data-del=goals data-id=${g.id}>×</button></span></div>`).join('');
-V.notes=()=>`<form data-add=notes class=row><input name=title placeholder="Title" required><textarea name=body placeholder="Write a note…" rows=3 style="flex:2;min-width:200px"></textarea><button>Save</button></form>`+
-  S.notes.map(n=>`<div class=item><span><b>${esc(n.title)}</b><br><small style="white-space:pre-wrap">${esc(n.body)}</small></span><button data-del=notes data-id=${n.id}>×</button></div>`).join('');
-
-/* Pomodoro (timer state lives outside render so it keeps running) */
-const P={mode:'focus',left:1500,run:false,t:null},fmt=s=>`${String(Math.floor(s/60)).padStart(2,0)}:${String(s%60).padStart(2,0)}`;
-V.pomodoro=()=>`<div class=clock id=clock>${fmt(P.left)}</div><div class=row style="justify-content:center">
-  <button data-p=toggle>${P.run?'Pause':'Start'}</button><button data-p=reset>Reset</button><button data-p=mode>${P.mode=='focus'?'Switch to break':'Switch to focus'}</button></div>
-  <p style="text-align:center" class=muted>${P.mode=='focus'?'Focus · 25 min':'Break · 5 min'} — sessions today: ${pomo()[today()]||0}</p>`;
-function tick(){
-  if(--P.left>0){$('#clock')&&($('#clock').textContent=fmt(P.left));document.title=fmt(P.left)+' · Study Planner';return}
-  clearInterval(P.t);P.run=false;
-  if(P.mode=='focus'){const p=pomo();p[today()]=(p[today()]||0)+1;localStorage.setItem('sp_pomo',JSON.stringify(p))}
-  notify(P.mode=='focus'?'Focus session done — take a break!':'Break over — back to work!');
-  P.mode=P.mode=='focus'?'break':'focus';P.left=P.mode=='focus'?1500:300;document.title='Study Planner';render();
-}
-
-/* ---------- render + events ---------- */
-let NAV;const SNAV=[['dashboard','🏠 Dashboard'],['tasks','✅ Tasks'],['assignments','📄 Assignments'],['calendar','📅 Calendar'],['attendance','🎯 Attendance'],['cgpa','🎓 CGPA'],['goals','🏆 Goals'],['notes','📝 Notes'],['pomodoro','⏱ Pomodoro']];
-function render(){
-  $('#nav').innerHTML=NAV.map(([k,n])=>`<button data-view=${k} class="${k==view?'on':''}">${n}</button>`).join('');
-  $('#ptitle').textContent=(NAV.find(n=>n[0]==view)||['',''])[1].replace(/^\S+\s/,'');
-  if(ME)$('#me').innerHTML=`<i>${esc(ME.name[0]).toUpperCase()}</i><span>${esc(ME.name)}<small>${ME.role}</small></span>`;
-  $('#main').innerHTML=V[view]();
-}
-document.addEventListener('click',e=>{
-  const b=e.target.closest('button');if(!b)return;const d=b.dataset;
-  if(d.view){view=d.view;render()}
-  if(d.del){S[d.del]=S[d.del].filter(x=>x.id!=d.id);save(d.del)}
-  if(d.tog){const a=S.assignments.find(x=>x.id==d.tog);a.done=!a.done;save('assignments')}
-  if(d.att){const a=S.attendance.find(x=>x.id==d.id);a.total++;if(d.att=='p')a.att++;save('attendance')}
-  if(d.inc){const g=S.goals.find(x=>x.id==d.id);g.cur=Math.min(g.target,g.cur+1);save('goals')}
-  if(d.cal){cal.setMonth(cal.getMonth()+ +d.cal);render()}
-  if(d.p=='toggle'){P.run=!P.run;clearInterval(P.t);if(P.run)P.t=setInterval(tick,1000);render()}
-  if(d.p=='reset'){clearInterval(P.t);P.run=false;P.left=P.mode=='focus'?1500:300;render()}
-  if(d.p=='mode'){clearInterval(P.t);P.run=false;P.mode=P.mode=='focus'?'break':'focus';P.left=P.mode=='focus'?1500:300;render()}
-});
-document.addEventListener('submit',e=>{
-  const f=e.target.closest('form[data-add]');if(!f)return;e.preventDefault();
-  const t=f.dataset.add,o=Object.fromEntries(new FormData(f));o.id=uid();
-  ['att','total','target','credits','gp'].forEach(k=>k in o&&(o[k]=+o[k]));
-  if(t=='tasks')o.status='todo';if(t=='assignments')o.done=false;if(t=='goals')o.cur=0;
-  if(t=='attendance'&&o.att>o.total)return alert('Attended cannot exceed total');
-  S[t].push(o);save(t);
-});
-document.addEventListener('change',e=>{
-  if(e.target.id=='pf'){pf=e.target.value;render()}if(e.target.id=='sort'){sort=e.target.value;render()}
-});
-/* drag & drop for kanban */
-let dragId=null;
-document.addEventListener('dragstart',e=>{const i=e.target.closest?.('.item[draggable]');if(i)dragId=i.dataset.id});
-document.addEventListener('dragover',e=>{if(e.target.closest?.('.col'))e.preventDefault()});
-document.addEventListener('drop',e=>{
-  const c=e.target.closest?.('.col');if(!c||!dragId)return;e.preventDefault();
-  const fp=POSTED.find(p=>'F'+p.id==dragId);
-  if(fp){fp.status=c.dataset.s;api('progress',{method:'POST',body:JSON.stringify({aid:fp.id,status:fp.status})});render()}
-  else{const t=S.tasks.find(x=>x.id==dragId);if(t){t.status=c.dataset.s;save('tasks')}}dragId=null;
-});
-/* search, theme, shortcuts */
-$('#q').addEventListener('input',e=>{q=e.target.value.toLowerCase();if(ME.role=='student'&&view!='tasks')view='tasks';render()});
-const setTheme=t=>{document.documentElement.dataset.theme=t;localStorage.setItem('sp_theme',t)};
-const toggleTheme=()=>setTheme(document.documentElement.dataset.theme=='dark'?'light':'dark');
-$('#theme').onclick=toggleTheme;
-document.addEventListener('keydown',e=>{
-  if(/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)||e.ctrlKey||e.metaKey)return;
-  if(e.key=='/'){e.preventDefault();$('#q').focus()}
-  else if(e.key=='d')toggleTheme();
-  else if(e.key=='n'&&ME&&ME.role=='student'){view='tasks';render();e.preventDefault();$('#newtask').focus()}
-  else if(/^[1-9]$/.test(e.key)&&NAV&&NAV[e.key-1]){view=NAV[e.key-1][0];render()}
-});
-/* notifications: ask once, then warn about assignments due within 24h */
-function notify(msg){if('Notification' in window&&Notification.permission=='granted')new Notification('Study Planner',{body:msg});else console.log(msg)}
-$('#bell').onclick=()=>'Notification' in window&&Notification.requestPermission().then(p=>p=='granted'&&notify('Notifications enabled ✅'));
-function checkDue(){
-  const seen=JSON.parse(localStorage.getItem('sp_seen')||'[]');
-  S.assignments.filter(a=>!a.done&&a.due&&!seen.includes(a.id)).forEach(a=>{
-    const ms=new Date(a.due)-Date.now();if(ms>0&&ms<864e5){notify(`"${a.title}" is due in ${Math.ceil(ms/36e5)}h`);seen.push(a.id)}});
-  localStorage.setItem('sp_seen',JSON.stringify(seen));
-  if(view=='assignments'||view=='dashboard')render();
-}
-/* boot */
-setTheme(localStorage.getItem('sp_theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
-if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
-/* ---------- faculty side ---------- */
-const FNAV=[['assign','📋 Assign tasks'],['notes','📝 Notes']];
-const prog=p=>{const n=p.students.length,d=p.students.filter(s=>s.status=='done').length;return `${d}/${n} done${bar(n?d/n*100:0)}`};
-V.assign=()=>`<h2>Assign a task</h2><form id=af class=row><input name=title placeholder="Task title" required><input name=subject placeholder="Subject"><input type=date name=due required title="Last date">
-  <input name=desc placeholder="Instructions (optional)" style="flex:2"><select name=aud><option value=all>All students</option>${STU.map(s=>`<option value=${s.id}>${esc(s.name)} only</option>`).join('')}</select><button>Assign</button></form>
-  <h3>Assigned tasks</h3>${POSTED.map(p=>`<div class=item><span><b>${esc(p.title)}</b> <small>${esc(p.subject)} · last date ${p.due}</small><br>${p.students.map(s=>`<small>${esc(s.name)}: ${s.status}</small>`).join(' · ')||'<small>No students registered yet</small>'}<br>${prog(p)}</span><button data-delp=${p.id}>×</button></div>`).join('')||'<p class=muted>Nothing assigned yet.</p>'}`;
-document.addEventListener('submit',async e=>{
-  if(e.target.id!='af')return;e.preventDefault();
-  const o=Object.fromEntries(new FormData(e.target));o.audience=o.aud=='all'?'all':[o.aud];delete o.aud;
-  const r=await api('posted',{method:'POST',body:JSON.stringify(o)});
-  if(r.ok){await loadPosted();render()}else alert('Could not assign task');
-});
-document.addEventListener('click',async e=>{
-  if(e.target.id=='out')logout();
-  const id=e.target.dataset?.delp;if(id&&confirm('Delete this task for all students?')){await api('posted/'+id,{method:'DELETE'});await loadPosted();render()}
-});
-async function loadPosted(){
-  try{const r=await api('posted');if(r.status==401)return logout();POSTED=await r.json();localStorage.setItem(K('posted'),JSON.stringify(POSTED));
-    if(ME.role=='faculty')STU=await(await api('students')).json()}
-  catch{POSTED=JSON.parse(localStorage.getItem(K('posted'))||'[]')}
-}
-async function refresh(){   // auto-pull new faculty tasks every 30s
-  const old=POSTED.map(p=>p.id),b=JSON.stringify(POSTED);await loadPosted();if(!ME)return;
-  if(ME.role=='student')POSTED.filter(p=>!old.includes(p.id)).forEach(p=>notify('New task from '+p.faculty_name+': '+p.title));
-  if(b!=JSON.stringify(POSTED)&&!document.activeElement.closest?.('form'))render();
-}
-/* ---------- login / register ---------- */
-let reg=false;
-function authUI(){
-  $('#auth').innerHTML=`<div class=overlay><div class=hero><h1>Plan smarter.<br>Study better.</h1><p>One place for tasks, deadlines, attendance and goals — with faculty assignments delivered straight to your board.</p><ul><li>✓ Drag-and-drop task board</li><li>✓ Deadline countdowns &amp; reminders</li><li>✓ Works offline, syncs when you're back</li></ul></div><form id=lf class=box><h2>${reg?'Create your account':'Welcome back'}</h2><small>${reg?'Join as a student or faculty member':'Sign in to continue'}</small>${reg?'<input name=name placeholder="Full name" required>':''}
-  <input name=email type=email placeholder="Email" required><input name=password type=password placeholder="Password (min 4)" required>
-  ${reg?'<select name=role><option value=student>I am a student</option><option value=faculty>I am faculty</option></select><input name=code placeholder="Faculty code (faculty only)">':''}
-  <button>${reg?'Create account':'Login'}</button><small id=err class=over></small><a href="#" id=sw>${reg?'Have an account? Login':'New here? Register'}</a></form></div>`;
-  $('#sw').onclick=e=>{e.preventDefault();reg=!reg;authUI()};
-  $('#lf').onsubmit=async e=>{e.preventDefault();
-    const r=await fetch('/api/'+(reg?'register':'login'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(e.target)))});
-    const d=await r.json();if(!r.ok)return $('#err').textContent=d.error;
-    TOK=d.token;ME=d.user;localStorage.setItem('sp_tok',TOK);localStorage.setItem('sp_me',JSON.stringify(ME));start()};
-}
-function logout(){['sp_tok','sp_me'].forEach(k=>localStorage.removeItem(k));TOK=ME=null;POSTED=[];authUI()}
-async function start(){
-  $('#auth').innerHTML='';loadLocal();NAV=ME.role=='faculty'?FNAV:SNAV;view=NAV[0][0];
-  POSTED=JSON.parse(localStorage.getItem(K('posted'))||'[]');render();
-  await loadPosted();if(!ME)return;await pull();render();checkDue();
-}
-ME&&TOK?start():authUI();
-setInterval(()=>ME&&refresh(),30000);setInterval(()=>ME&&checkDue(),60000);
-addEventListener('online',()=>ME&&pull().then(render));
-</script>
-</body></html>
+const $=s=>document.querySelector(s),QS=new URLSearchParams(location.search);let mode='login';
+function setMode(m){mode=m;const r=m=='register';$('#tl').classList.toggle('on',!r);$('#tr').classList.toggle('on',r);
+  $('#ttl').textContent=r?'Create your account':'Welcome back';$('#sub').textContent=r?'Join as a student or faculty member.':'Sign in to continue to your dashboard.';
+  $('#gt').textContent=r?'Create account':'Sign in';$('.reg').style.display=r?'block':'none';$('#pw').autocomplete=r?'new-password':'current-password';fac();err('')}
+const fac=()=>$('.fac').style.display=mode=='register'&&$('#rf').checked?'block':'none',err=t=>$('#err').textContent=t;
+$('#tl').onclick=()=>setMode('login');$('#tr').onclick=()=>setMode('register');
+document.querySelectorAll('[name=role]').forEach(r=>r.onchange=fac);
+$('#eye').onclick=()=>{const s=$('#pw').type=='password';$('#pw').type=s?'text':'password';$('#eye').textContent=s?'Hide':'Show'};
+$('#f').onsubmit=async e=>{e.preventDefault();err('');
+  const email=$('#email').value.trim(),password=$('#pw').value,reg=mode=='register',role=$('#rf').checked?'faculty':'student';
+  if(reg&&!$('#name').value.trim())return err('Please enter your full name.');
+  if(!/^\S+@\S+\.\S+$/.test(email))return err('Please enter a valid email address.');
+  if(password.length<4)return err('Password must be at least 4 characters.');
+  if(reg&&role=='faculty'&&!$('#code').value.trim())return err('Faculty code is required for faculty accounts.');
+  const body=reg?{name:$('#name').value.trim(),email,password,role,code:$('#code').value.trim()}:{email,password};
+  $('#go').disabled=true;
+  try{const r=await fetch('/api/'+(reg?'register':'login'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    let d={};try{d=await r.json()}catch{}
+    if(!r.ok)return err(d.error||'The server is not connected in this preview.');
+    localStorage.setItem('sp_tok',d.token);localStorage.setItem('sp_me',JSON.stringify(d.user));location.href='/app.html'}
+  catch{err('Could not reach the server. Please check your connection.')}
+  finally{$('#go').disabled=false}};
+if(QS.get('role')=='faculty')$('#rf').checked=true;setMode(QS.get('mode')=='register'?'register':'login');
+try{if(localStorage.getItem('sp_tok'))$('#cont').style.display='flex'}catch(e){}
+</script></body></html>

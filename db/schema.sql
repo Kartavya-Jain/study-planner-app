@@ -1,0 +1,61 @@
+-- Study Planner schema (runs on PostgreSQL and SQLite). Applied automatically on first request.
+CREATE TABLE IF NOT EXISTS accounts(
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  role TEXT NOT NULL CHECK (role IN ('student','faculty')),
+  salt TEXT NOT NULL,
+  pw TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS tasks(
+  owner TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  id TEXT NOT NULL, title TEXT NOT NULL, pri TEXT DEFAULT 'm', due TEXT DEFAULT '', status TEXT DEFAULT 'todo',
+  PRIMARY KEY(owner,id)
+);
+CREATE TABLE IF NOT EXISTS assignments(
+  owner TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  id TEXT NOT NULL, title TEXT NOT NULL, subject TEXT DEFAULT '', due TEXT DEFAULT '', done BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY(owner,id)
+);
+CREATE TABLE IF NOT EXISTS attendance(
+  owner TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  id TEXT NOT NULL, subject TEXT NOT NULL, att INTEGER NOT NULL DEFAULT 0, total INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY(owner,id)
+);
+CREATE TABLE IF NOT EXISTS goals(
+  owner TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  id TEXT NOT NULL, title TEXT NOT NULL, target INTEGER NOT NULL DEFAULT 1, cur INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY(owner,id)
+);
+CREATE TABLE IF NOT EXISTS notes(
+  owner TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  id TEXT NOT NULL, title TEXT NOT NULL, body TEXT DEFAULT '',
+  PRIMARY KEY(owner,id)
+);
+CREATE TABLE IF NOT EXISTS courses(
+  owner TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  id TEXT NOT NULL, name TEXT NOT NULL, credits INTEGER NOT NULL DEFAULT 1, gp INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY(owner,id)
+);
+CREATE TABLE IF NOT EXISTS posted(
+  id TEXT PRIMARY KEY,
+  faculty_id TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  title TEXT NOT NULL, subject TEXT DEFAULT '', descr TEXT DEFAULT '', due TEXT NOT NULL,
+  all_students BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS posted_targets(
+  post_id TEXT NOT NULL REFERENCES posted(id) ON DELETE CASCADE,
+  student_id TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  PRIMARY KEY(post_id,student_id)
+);
+CREATE TABLE IF NOT EXISTS progress(
+  post_id TEXT NOT NULL REFERENCES posted(id) ON DELETE CASCADE,
+  student_id TEXT NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+  status TEXT NOT NULL CHECK (status IN ('todo','doing','done')),
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(post_id,student_id)
+);
+CREATE INDEX IF NOT EXISTS idx_posted_faculty ON posted(faculty_id);
+CREATE INDEX IF NOT EXISTS idx_progress_student ON progress(student_id);

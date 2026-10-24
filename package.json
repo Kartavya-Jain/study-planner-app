@@ -1,0 +1,9 @@
+{
+  "name": "study-planner",
+  "private": true,
+  "scripts": {
+    "dev": "python api/index.py",
+    "push": "git add . && git commit -m update && git push",
+    "deploy": "vercel --prod"
+  }
+}
